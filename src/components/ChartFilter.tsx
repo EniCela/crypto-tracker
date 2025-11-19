@@ -15,7 +15,6 @@ const ChartFilter: React.FC<ChartFilterProps> = ({ selected, onChange }) => {
         display: "flex",
         justifyContent: "space-between",
         mx: 2,
-        my: 2,
       }}
     >
       {FILTERS.map((filter) => (

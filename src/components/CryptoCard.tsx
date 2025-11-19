@@ -19,6 +19,7 @@ interface CryptoCardProps {
   price: number;
   change: number;
   onClick?: () => void;
+  portfolio?: boolean; 
 }
 
 const CryptoCard: React.FC<CryptoCardProps> = ({
@@ -28,9 +29,10 @@ const CryptoCard: React.FC<CryptoCardProps> = ({
   price,
   change,
   onClick,
+  portfolio = false,
 }) => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [modalOpen, setModalOpen] = useState(false); 
+  const [modalOpen, setModalOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -46,8 +48,13 @@ const CryptoCard: React.FC<CryptoCardProps> = ({
   }, []);
 
   const handleAddCoin = () => {
-    setMenuOpen(false); 
-    setModalOpen(true); 
+    setMenuOpen(false);
+    setModalOpen(true);
+  };
+
+  const handleRemoveCoin = () => {
+    setMenuOpen(false);
+    setModalOpen(true);
   };
 
   return (
@@ -76,6 +83,7 @@ const CryptoCard: React.FC<CryptoCardProps> = ({
             </Typography>
           </Box>
         </Box>
+
         <Box
           sx={{
             display: "flex",
@@ -101,6 +109,7 @@ const CryptoCard: React.FC<CryptoCardProps> = ({
               {change.toFixed(2)}%
             </Typography>
           </Box>
+
           <Box sx={{ position: "relative" }} ref={menuRef}>
             <IconButton
               size="small"
@@ -130,23 +139,6 @@ const CryptoCard: React.FC<CryptoCardProps> = ({
                   minWidth: 140,
                 }}
               >
-                {/* <Button
-                  size="small"
-                  variant="contained"
-                  startIcon={<AddIcon />}
-                  sx={{
-                    textTransform: "none",
-                    borderRadius: 2,
-                    backgroundColor: "primary.main",
-                    color: "white",
-                    "&:hover": {
-                      backgroundColor: "primary.dark",
-                    },
-                  }}
-                  onClick={handleAddCoin}
-                >
-                  Add Coin
-                </Button> */}
                 <Button
                   size="small"
                   variant="contained"
@@ -155,16 +147,18 @@ const CryptoCard: React.FC<CryptoCardProps> = ({
                     textTransform: "none",
                     borderRadius: 2,
                     color: "#fff",
-                    background:
-                      "linear-gradient(90deg, #4facfe 0%, #00f2fe 100%)",
+                    background: portfolio
+                      ? "linear-gradient(90deg, #ff5f6d 0%, #ffc371 100%)"
+                      : "linear-gradient(90deg, #4facfe 0%, #00f2fe 100%)",
                     "&:hover": {
-                      background:
-                        "linear-gradient(90deg, #00f2fe 0%, #4facfe 100%)",
+                      background: portfolio
+                        ? "linear-gradient(90deg, #ffc371 0%, #ff5f6d 100%)"
+                        : "linear-gradient(90deg, #00f2fe 0%, #4facfe 100%)",
                     },
                   }}
-                  onClick={handleAddCoin}
+                  onClick={portfolio ? handleRemoveCoin : handleAddCoin}
                 >
-                  Add Coin
+                  {portfolio ? "Remove Coin" : "Add Coin"}
                 </Button>
               </Box>
             )}
@@ -172,10 +166,14 @@ const CryptoCard: React.FC<CryptoCardProps> = ({
         </Box>
       </Paper>
 
-      {/* Modal */}
+      {/* Modal Alert */}
       {modalOpen && (
         <AlertModal
-          message={`${name} u shtua në portofolin tuaj!`}
+          message={
+            portfolio
+              ? `${name} u hoq nga portofoli tuaj!`
+              : `${name} u shtua në portofolin tuaj!`
+          }
           onClose={() => setModalOpen(false)}
         />
       )}

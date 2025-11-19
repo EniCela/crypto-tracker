@@ -1,6 +1,5 @@
-import react from "react";
 import React from "react";
-import { AppBar, Toolbar, Typography, Box } from "@mui/material";
+import { AppBar, Typography, Box } from "@mui/material";
 
 interface HeaderProps {
   title: string;
@@ -20,12 +19,12 @@ const Header: React.FC<HeaderProps> = ({ title, count }) => {
     >
       <Box
         sx={{
-          padding: "30px",
+          p: 2,
         }}
       >
         <Typography
           variant="body1"
-          sx={{ fontWeight: 600, paddingLeft: "6px 14px"  ,color:"#5E626F"}}
+          sx={{ fontWeight: 600, paddingLeft: "6px 14px", color: "#5E626F" }}
         >
           {title}
         </Typography>

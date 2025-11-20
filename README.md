@@ -1,9 +1,9 @@
 
-<!-- Crypto Tracker -->
+`Crypto Tracker`
 
 Crypto Tracker is a real-time cryptocurrency tracking app built with React, TypeScript, Redux, MUI, and Axios. It fetches live market data from the CoinGecko API, supports paginated loading, and allows users to filter coins by time intervals (1H, 1D, 1W, 1M, 1Y, All). Each coin is displayed in a CryptoCard, enabling users to add or remove coins from their portfolio. The app includes polling to refresh the currently viewed page every 10 seconds and modal alerts for portfolio actions. It offers a clean, responsive, and interactive experience for cryptocurrency .
 
-<!-- Technologies Used -->
+`Technologies Used`
 
 React
 
@@ -16,7 +16,7 @@ Material-UI (MUI)
 Axios
 
 
-<!-- Final version of Crypto Tracker(Main feature) -->
+`Final version of Crypto Tracker(Main feature)`
 
 - Implemented full Crypto Tracker with paginated fetching from CoinGecko API.
 - Added polling to refresh only the current page every 10 seconds.
@@ -28,19 +28,19 @@ Axios
 - Optimized polling to avoid unnecessary re-fetches for other pages.
 
 
-<!-- Getting Started -->
+`Getting Started`
 
     Clone the repository git clone <your-repo-url>
 
-<!-- Navigate to the project folder -->
+`Navigate to the project folder`
     cd crypto-tracker
 
-<!-- Install dependencies -->
+`Install dependencies`
     npm install
 
-<!-- Run the development server -->
+`Run the development`
     npm start
 
-<!-- Open the app -->
+`Open the app`
     Navigate to http://localhost:3000 in your browser.
 

@@ -38,21 +38,6 @@ const AlertModal: React.FC<AlertModalProps> = ({ message, onClose }) => {
         <Typography variant="h6" fontWeight="bold" mb={2}>
           {message}
         </Typography>
-        {/* <Button
-          variant="contained"
-          sx={{
-            borderRadius: 2,
-            px: 3,
-            textTransform: "none",
-            backgroundColor: "primary.main",
-            "&:hover": {
-              backgroundColor: "primary.dark",
-            },
-          }}
-          onClick={onClose}
-        >
-          Close
-        </Button> */}
         <Button
           variant="contained"
           sx={{

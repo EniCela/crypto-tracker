@@ -7,7 +7,7 @@ import {
   IconButton,
   Button,
 } from "@mui/material";
-import RemoveIcon from '@mui/icons-material/Remove';
+import RemoveIcon from "@mui/icons-material/Remove";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import AddIcon from "@mui/icons-material/Add";
 import AlertModal from "./modal/AlertModal";
@@ -17,17 +17,7 @@ import { addToPortfolio, removeFromPortfolio } from "../store/cryptoSlice";
 import { Coin } from "../types/CoinType";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
-
-interface CryptoCardProps {
-  id: string;
-  name: string;
-  symbol: string;
-  logo: string;
-  price: number;
-  change: number;
-  onClick?: () => void;
-  portfolio?: boolean;
-}
+import { CryptoCardProps } from "../types/CryptoCardProps";
 
 const CryptoCard: React.FC<CryptoCardProps> = ({
   id,
@@ -43,6 +33,8 @@ const CryptoCard: React.FC<CryptoCardProps> = ({
   const [modalOpen, setModalOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
   const dispatch = useDispatch<AppDispatch>();
+  const [actionType, setActionType] = useState<"add" | "remove" | null>(null);
+
   const portfolioCoins = useSelector(
     (state: RootState) => state.crypto.portfolio
   );
@@ -82,12 +74,14 @@ const CryptoCard: React.FC<CryptoCardProps> = ({
   const handleAddCoinRedux = () => {
     dispatch(addToPortfolio(coin));
     setMenuOpen(false);
+    setActionType("add");
     setModalOpen(true);
   };
 
   const handleRemoveCoinRedux = () => {
     dispatch(removeFromPortfolio(coin.id));
     setMenuOpen(false);
+    setActionType("remove");
     setModalOpen(true);
   };
 
@@ -168,6 +162,7 @@ const CryptoCard: React.FC<CryptoCardProps> = ({
 
             {menuOpen && (
               <Box
+                onClick={(e) => e.stopPropagation()}
                 sx={{
                   position: "absolute",
                   top: "100%",
@@ -187,7 +182,7 @@ const CryptoCard: React.FC<CryptoCardProps> = ({
                 <Button
                   size="small"
                   variant="contained"
-  startIcon={portfolio ? <RemoveIcon /> : <AddIcon />}
+                  startIcon={portfolio ? <RemoveIcon /> : <AddIcon />}
                   sx={{
                     textTransform: "none",
                     borderRadius: 2,
@@ -201,9 +196,10 @@ const CryptoCard: React.FC<CryptoCardProps> = ({
                         : "linear-gradient(90deg, #00f2fe 0%, #4facfe 100%)",
                     },
                   }}
-                  onClick={
-                    portfolio ? handleRemoveCoinRedux : handleAddCoinRedux
-                  }
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    portfolio ? handleRemoveCoinRedux() : handleAddCoinRedux();
+                  }}
                 >
                   {portfolio ? "Remove Coin" : "Add Coin"}
                 </Button>
@@ -216,11 +212,14 @@ const CryptoCard: React.FC<CryptoCardProps> = ({
       {modalOpen && (
         <AlertModal
           message={
-            portfolio
-              ? `${name} u hoq nga portofoli tuaj!`
-              : `${name} u shtua në portofolin tuaj!`
+            actionType === "remove"
+              ? `${name} Removed from your portfolio!`
+              : `${name} Added to your portfolio!`
           }
-          onClose={() => setModalOpen(false)}
+          onClose={() => {
+            setModalOpen(false);
+            setActionType(null);
+          }}
         />
       )}
     </>

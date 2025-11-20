@@ -2,16 +2,14 @@ import React from "react";
 import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
-  LineElement,
   CategoryScale,
   LinearScale,
   PointElement,
+  LineElement,
   Tooltip,
-  ChartData,
 } from "chart.js";
-import { Box } from "@mui/material";
 
-ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement, Tooltip);
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip);
 
 interface CryptoChartProps {
   labels: string[];
@@ -19,20 +17,21 @@ interface CryptoChartProps {
 }
 
 const CryptoChart: React.FC<CryptoChartProps> = ({ labels, dataPoints }) => {
-  const firstValue = dataPoints[0];
-  const lastValue = dataPoints[dataPoints.length - 1];
+  const sanitizedData = dataPoints?.map(d => (typeof d === "number" ? d : 0)) || [0];
+  const sanitizedLabels = labels?.length ? labels : [""];
 
-  const chartData: ChartData<"line"> = {
-    labels,
+  const data = {
+    labels: sanitizedLabels,
     datasets: [
       {
-        label: "",
-        data: dataPoints,
-        borderColor: "#1976d2", // blu
+        label: "Portfolio Value",
+        data: sanitizedData,
+        borderColor: "#4facfe", 
         borderWidth: 2,
-        fill: false,
-        pointRadius: 0,
-        tension: 0.3,
+        pointRadius: 4,    
+        pointBackgroundColor: "#4facfe",
+        fill: false,       
+        tension: 0.3,        
       },
     ],
   };
@@ -40,47 +39,40 @@ const CryptoChart: React.FC<CryptoChartProps> = ({ labels, dataPoints }) => {
   const options = {
     responsive: true,
     plugins: {
-      legend: { display: false },
-      tooltip: { enabled: false },
+      legend: {
+        display: false, 
+      },
+      tooltip: {
+        enabled: true, 
+      },
     },
     scales: {
       x: {
-        display: false,
-        grid: { display: false },
+        grid: {
+          display: false, 
+        },
+        ticks: {
+          display: false, 
+        },
+        border: {
+          display: false,
+        },
       },
       y: {
-        display: false,
-        grid: { display: false },
+        grid: {
+          display: false, 
+        },
+        ticks: {
+          display: false, 
+        },
+        border: {
+          display: false,
+        },
       },
     },
   };
 
-  return (
-    <Box
-      sx={{
-        width: { xs: "100%", md: "50%" },
-      }}
-    >
-
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          mb: 1, 
-          fontSize: 12,
-          color: "#555",
-        }}
-      >
-        <span>{firstValue.toFixed(2)} USD</span>
-        <span>{lastValue.toFixed(2)} USD</span>
-      </Box>
-
-      {/* Grafiku */}
-      <Box sx={{ height: 300 }}>
-        <Line data={chartData} options={options} />
-      </Box>
-    </Box>
-  );
+  return <Line data={data} options={options} />;
 };
 
 export default CryptoChart;

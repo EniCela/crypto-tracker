@@ -1,8 +1,8 @@
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import HomePage from "./pages/HomePage";
+import HomePage from "./pages/Portofoliopage";
 import FooterNav from "./components/FooterNav";
-import PortofolioPage from "./pages/PortofolioPage";
+import PortofolioPage from "./pages/Homepage";
 import ProfilePage from "./pages/ProfilePage";
 import HeaderApp from "./components/HeaderApp";
 import { Box } from "@mui/material";

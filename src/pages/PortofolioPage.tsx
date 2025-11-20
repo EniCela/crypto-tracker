@@ -1,127 +1,150 @@
 import React, { useEffect, useState } from "react";
-import { Button, Box, Typography } from "@mui/material";
 import Header from "../components/HeaderPage";
+import CryptoChart from "../components/CryptoChart";
 import CryptoList from "../components/CryptoList";
 import ChartFilter from "../components/ChartFilter";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../store";
-import { getApi } from "../services/getApi";
-import { setCoins } from "../store/cryptoSlice";
+import CryptoImage from "../assets/cryptoimg.jpg";
+import { Box } from "@mui/material";
+import { useSelector } from "react-redux";
+import { RootState } from "../store";
 import { Coin } from "../types/CoinType";
 
-const FILTER_API_MAP: Record<string, string | null> = {
-  "1H": "1h",
-  "1D": "1",
-  "1W": "7",
-  "1M": "30",
-  "1Y": "365",
-  "All": null,
-};
-
 const PortofolioPage: React.FC = () => {
-  const [coinsData, setCoinsData] = useState<Coin[]>([]);
-  const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(false);
-  const [hasMore, setHasMore] = useState(true);
-  const [selectedFilter, setSelectedFilter] = useState("All");
+  const [selectedFilter, setSelectedFilter] = useState("1D");
+  const [chartLabels, setChartLabels] = useState<string[]>([]);
+  const [chartData, setChartData] = useState<number[]>([]);
 
-  const dispatch = useDispatch<AppDispatch>();
+  const portfolioCoins = useSelector(
+    (state: RootState) => state.crypto.portfolio
+  );
 
-  const fetchCryptoData = async (pageNumber: number, filter: string) => {
-    try {
-      setLoading(true);
-      let url = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&per_page=20&page=${pageNumber}`;
-      
-      const filterParam = FILTER_API_MAP[filter];
-      if (filterParam) {
-        url += `&days=${filterParam}`;
-      }
-
-      const response = await getApi(url);
-      if (pageNumber === 1) {
-        setCoinsData(response);
-      } else {
-        setCoinsData((prev) => [...prev, ...response]);
-      }
-      dispatch(setCoins(response));
-
-      if (response.length < 20) {
-        setHasMore(false);
-      }
-    } catch (error) {
-      console.error("Error fetching crypto data:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    setPage(1);
-    setHasMore(true);
-    fetchCryptoData(1, selectedFilter);
-  }, [selectedFilter]);
-
-  useEffect(() => {
-    if (page > 1) {
-      fetchCryptoData(page, selectedFilter);
-    }
-  }, [page]);
-
-  const handleLoadMore = () => {
-    setPage((prev) => prev + 1);
-  };
+  // Total portfolio value
+  const totalPortfolioValue = portfolioCoins.reduce(
+    (sum, coin) => sum + (coin.current_price || 0),
+    0
+  );
 
   const handleFilterChange = (value: string) => {
     setSelectedFilter(value);
   };
 
+  // generate  chart data
+  const generatePortfolioChartData = (coins: Coin[], filter: string) => {
+    if (!coins || coins.length === 0) return { labels: ["Now"], data: [0] };
+
+    if (filter === "1D") {
+      const labels = ["0h", "6h", "12h", "18h", "24h"];
+      const data = labels.map((_, i) =>
+        coins.reduce((sum, coin) => {
+          const changePct = coin.price_change_percentage_24h || 0;
+          const factor = i / (labels.length - 1);
+          const price = coin.current_price || 0;
+          return sum + price * (1 + (changePct / 100) * factor);
+        }, 0)
+      );
+      return { labels, data };
+    }
+    const labels = ["Total"];
+    const data = [
+      coins.reduce((sum, coin) => sum + (coin.current_price || 0), 0),
+    ];
+    return { labels, data };
+  };
+
+  useEffect(() => {
+    const { labels, data } = generatePortfolioChartData(
+      portfolioCoins,
+      selectedFilter
+    );
+    setChartLabels(labels);
+    setChartData(data);
+  }, [portfolioCoins, selectedFilter]);
+
+  // Filter for CryptoList
+  const filterCoins = (coins: Coin[], selected: string) => {
+    switch (selected) {
+      case "1D":
+        return coins.filter(
+          (c) =>
+            c.price_change_percentage_24h !== undefined &&
+            c.price_change_percentage_24h !== null
+        );
+      case "All":
+        return coins;
+      default:
+        return coins;
+    }
+  };
+
   return (
     <div>
-      <Header title="OverView of Situation" count={"152 345 2345 "} />
-
-      <ChartFilter selected={selectedFilter} onChange={handleFilterChange} />
-
-      <Box sx={{ mt: 2 }}>
-        <CryptoList coins={coinsData} portfolio={false} />
-      </Box>
-
-      {/* Load More button */}
+      <Header
+        title="Overview of Situation"
+        count={totalPortfolioValue.toLocaleString("en-US", {
+          style: "currency",
+          currency: "USD",
+        })}
+      />
       <Box
         sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          mt: 3,
-          mb: 5,
+          display: { xs: "block", md: "grid" },
+          gridTemplateColumns: { md: "1fr 1fr" },
+          gap: "20px",
+          width: "100%",
+          height: "100%",
         }}
       >
-        <Button
-          variant="contained"
+        <Box
           sx={{
-            borderRadius: 2,
-            px: 4,
-            py: 1.5,
-            textTransform: "none",
-            background: "linear-gradient(90deg, #4facfe 0%, #00f2fe 100%)",
-            color: "#fff",
-            "&:hover": {
-              background: "linear-gradient(90deg, #00f2fe 0%, #4facfe 100%)",
-            },
+            display: "flex",
+            mx: 2,
+            justifyContent: "center",
+            alignItems: "center",
+            flex: { xs: 1 },
           }}
-          onClick={handleLoadMore}
-          disabled={loading || !hasMore}
         >
-          {loading ? "Loading..." : hasMore ? "Load More" : "No more coins"}
-        </Button>
-        {!hasMore && (
-          <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-            You have reached the end of the list.
-          </Typography>
-        )}
+          <CryptoChart labels={chartLabels} dataPoints={chartData} />
+        </Box>
+        <Box
+          sx={{
+            display: { xs: "none", md: "flex" },
+            mt: -5,
+            justifyContent: "center",
+            alignItems: "center",
+            width: "100%",
+            height: "100%",
+          }}
+        >
+          <img
+            src={CryptoImage}
+            alt="Chart illustration"
+            style={{ width: "40%", borderRadius: "12px" }}
+          />
+        </Box>
       </Box>
+      <div>
+        <ChartFilter selected={selectedFilter} onChange={handleFilterChange} />
+        {filterCoins(portfolioCoins, selectedFilter).length === 0 ? (
+          <Box
+            sx={{
+              textAlign: "center",
+              mt: 3,
+              fontSize: "18px",
+              fontWeight: 500,
+              opacity: 0.7,
+            }}
+          >
+            There are no coins at the moment. Your portfolio is currently empty.
+          </Box>
+        ) : (
+          <CryptoList
+            coins={filterCoins(portfolioCoins, selectedFilter)}
+            portfolio={true}
+          />
+        )}
+      </div>
     </div>
   );
 };
 
 export default PortofolioPage;
-

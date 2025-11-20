@@ -1,90 +1,3 @@
-// import React, { useState } from "react";
-// import { Box } from "@mui/material";
-// import CryptoCard from "./CryptoCard";
-// import CryptoModal from "./modal/CryptoModal";
-// import { Coin } from "../types/CoinType";
-
-// interface CryptoAPIItem {
-//   id: string;
-//   name: string;
-//   symbol: string;
-//   image: string;
-//   current_price: number;
-//   price_change_percentage_24h?: number;
-// }
-
-// interface CryptoListProps {
-//   coins: CryptoAPIItem[];
-//   portfolio?: boolean;
-// }
-
-// const CryptoList: React.FC<CryptoListProps> = ({
-//   coins,
-//   portfolio = false,
-// }) => {
-//   const [selectedCoin, setSelectedCoin] = useState<Coin | null>(null);
-//   const [modalOpen, setModalOpen] = useState(false);
-
-//   const handleCardClick = (coin: Coin) => {
-//     setSelectedCoin(coin);
-//     setModalOpen(true);
-//   };
-//   return (
-//     <Box
-//       sx={{
-//         display: "flex",
-//         flexWrap: "wrap",
-//         gap: 2,
-//         justifyContent: "center",
-//         m: 2,
-//       }}
-//     >
-//       {coins.map((coin) => (
-//         <Box
-//           key={coin.id}
-//           sx={{
-//             width: { xs: "100%", sm: "48%", md: "31%" },
-//             maxWidth: "100%",
-//             flexShrink: 0,
-//           }}
-//         >
-//           <CryptoCard
-//             {...coin}
-//             id={coin.id}
-//             name={coin.name}
-//             symbol={coin.symbol}
-//             logo={coin.image}
-//             price={coin.current_price}
-//             change={coin.price_change_percentage_24h || 0}
-//             portfolio={portfolio}
-//             onClick={() => handleCardClick(coin)}
-//           />
-//         </Box>
-//       ))}
-//         <CryptoModal
-//         coin={selectedCoin}
-//         open={modalOpen}
-//         onClose={() => setModalOpen(false)}
-//       />
-//     </Box>
-//   );
-// };
-
-// export default CryptoList;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import React, { useState } from "react";
 import { Box } from "@mui/material";
 import CryptoCard from "./CryptoCard";
@@ -134,7 +47,10 @@ const mapToCoin = (coin: CryptoAPIItem): Coin => ({
   last_updated: new Date().toISOString(),
 });
 
-const CryptoList: React.FC<CryptoListProps> = ({ coins, portfolio = false }) => {
+const CryptoList: React.FC<CryptoListProps> = ({
+  coins,
+  portfolio = false,
+}) => {
   const [selectedCoin, setSelectedCoin] = useState<Coin | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -162,12 +78,7 @@ const CryptoList: React.FC<CryptoListProps> = ({ coins, portfolio = false }) => 
             flexShrink: 0,
           }}
         >
-          {/* <CryptoCard
-            {...mapToCoin(coin)}
-            portfolio={portfolio}
-            onClick={() => handleCardClick(coin)}
-          /> */}
-            <CryptoCard
+          <CryptoCard
             {...coin}
             id={coin.id}
             name={coin.name}
@@ -192,9 +103,3 @@ const CryptoList: React.FC<CryptoListProps> = ({ coins, portfolio = false }) => 
 };
 
 export default CryptoList;
-
-
-
-
-
-

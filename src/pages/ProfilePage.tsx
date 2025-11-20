@@ -11,13 +11,8 @@ import {
 import SettingsIcon from "@mui/icons-material/Settings";
 import PaymentIcon from "@mui/icons-material/Payment";
 import LogoutIcon from "@mui/icons-material/Logout";
-// import { useSelector } from "react-redux";
-// import { RootState } from "../store";
 
 const ProfilePage = () => {
-  // const coins = useSelector((state: RootState) => state.crypto.coins);
-  // console.log("test data from global store",coins);
-
   return (
     <Box
       sx={{

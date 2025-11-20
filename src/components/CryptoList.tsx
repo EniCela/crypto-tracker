@@ -1,18 +1,20 @@
-// import React from "react";
+// import React, { useState } from "react";
 // import { Box } from "@mui/material";
 // import CryptoCard from "./CryptoCard";
+// import CryptoModal from "./modal/CryptoModal";
+// import { Coin } from "../types/CoinType";
 
-// interface CryptoItem {
+// interface CryptoAPIItem {
 //   id: string;
 //   name: string;
 //   symbol: string;
-//   logo: string;
-//   price: number;
-//   change: number;
+//   image: string;
+//   current_price: number;
+//   price_change_percentage_24h?: number;
 // }
 
 // interface CryptoListProps {
-//   coins: CryptoItem[];
+//   coins: CryptoAPIItem[];
 //   portfolio?: boolean;
 // }
 
@@ -20,6 +22,13 @@
 //   coins,
 //   portfolio = false,
 // }) => {
+//   const [selectedCoin, setSelectedCoin] = useState<Coin | null>(null);
+//   const [modalOpen, setModalOpen] = useState(false);
+
+//   const handleCardClick = (coin: Coin) => {
+//     setSelectedCoin(coin);
+//     setModalOpen(true);
+//   };
 //   return (
 //     <Box
 //       sx={{
@@ -40,17 +49,23 @@
 //           }}
 //         >
 //           <CryptoCard
+//             {...coin}
 //             id={coin.id}
 //             name={coin.name}
 //             symbol={coin.symbol}
-//             logo={coin.logo}
-//             price={coin.price}
-//             change={coin.change}
+//             logo={coin.image}
+//             price={coin.current_price}
+//             change={coin.price_change_percentage_24h || 0}
 //             portfolio={portfolio}
-//             onClick={() => console.log("Clicked", coin.name)}
+//             onClick={() => handleCardClick(coin)}
 //           />
 //         </Box>
 //       ))}
+//         <CryptoModal
+//         coin={selectedCoin}
+//         open={modalOpen}
+//         onClose={() => setModalOpen(false)}
+//       />
 //     </Box>
 //   );
 // };
@@ -66,9 +81,15 @@
 
 
 
-import React from "react";
+
+
+
+
+import React, { useState } from "react";
 import { Box } from "@mui/material";
 import CryptoCard from "./CryptoCard";
+import CryptoModal from "./modal/CryptoModal";
+import { Coin } from "../types/CoinType";
 
 interface CryptoAPIItem {
   id: string;
@@ -84,7 +105,44 @@ interface CryptoListProps {
   portfolio?: boolean;
 }
 
+const mapToCoin = (coin: CryptoAPIItem): Coin => ({
+  id: coin.id,
+  symbol: coin.symbol,
+  name: coin.name,
+  image: coin.image,
+  current_price: coin.current_price,
+  market_cap: 0,
+  market_cap_rank: 0,
+  fully_diluted_valuation: null,
+  total_volume: 0,
+  high_24h: 0,
+  low_24h: 0,
+  price_change_24h: 0,
+  price_change_percentage_24h: coin.price_change_percentage_24h || 0,
+  market_cap_change_24h: 0,
+  market_cap_change_percentage_24h: 0,
+  circulating_supply: 0,
+  total_supply: null,
+  max_supply: null,
+  ath: 0,
+  ath_change_percentage: 0,
+  ath_date: "",
+  atl: 0,
+  atl_change_percentage: 0,
+  atl_date: "",
+  roi: null,
+  last_updated: new Date().toISOString(),
+});
+
 const CryptoList: React.FC<CryptoListProps> = ({ coins, portfolio = false }) => {
+  const [selectedCoin, setSelectedCoin] = useState<Coin | null>(null);
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const handleCardClick = (coin: CryptoAPIItem) => {
+    setSelectedCoin(mapToCoin(coin));
+    setModalOpen(true);
+  };
+
   return (
     <Box
       sx={{
@@ -104,20 +162,39 @@ const CryptoList: React.FC<CryptoListProps> = ({ coins, portfolio = false }) => 
             flexShrink: 0,
           }}
         >
-          <CryptoCard
+          {/* <CryptoCard
+            {...mapToCoin(coin)}
+            portfolio={portfolio}
+            onClick={() => handleCardClick(coin)}
+          /> */}
+            <CryptoCard
+            {...coin}
             id={coin.id}
             name={coin.name}
             symbol={coin.symbol}
-            logo={coin.image} // <-- nga API
-            price={coin.current_price} // <-- nga API
-            change={coin.price_change_percentage_24h || 0} // <-- nga API
+            logo={coin.image}
+            price={coin.current_price}
+            change={coin.price_change_percentage_24h || 0}
             portfolio={portfolio}
-            onClick={() => console.log("Clicked", coin.name)}
+            onClick={() => handleCardClick(coin)}
           />
         </Box>
       ))}
+
+      {/* Modal */}
+      <CryptoModal
+        coin={selectedCoin}
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+      />
     </Box>
   );
 };
 
 export default CryptoList;
+
+
+
+
+
+

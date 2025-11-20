@@ -7,9 +7,16 @@ import {
   IconButton,
   Button,
 } from "@mui/material";
+import RemoveIcon from '@mui/icons-material/Remove';
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import AddIcon from "@mui/icons-material/Add";
-import AlertModal from "./AlertModal";
+import AlertModal from "./modal/AlertModal";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../store";
+import { addToPortfolio, removeFromPortfolio } from "../store/cryptoSlice";
+import { Coin } from "../types/CoinType";
+import { useSelector } from "react-redux";
+import { RootState } from "../store";
 
 interface CryptoCardProps {
   id: string;
@@ -19,10 +26,11 @@ interface CryptoCardProps {
   price: number;
   change: number;
   onClick?: () => void;
-  portfolio?: boolean; 
+  portfolio?: boolean;
 }
 
 const CryptoCard: React.FC<CryptoCardProps> = ({
+  id,
   name,
   symbol,
   logo,
@@ -34,6 +42,54 @@ const CryptoCard: React.FC<CryptoCardProps> = ({
   const [menuOpen, setMenuOpen] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
+  const dispatch = useDispatch<AppDispatch>();
+  const portfolioCoins = useSelector(
+    (state: RootState) => state.crypto.portfolio
+  );
+  useEffect(() => {
+    console.log("Portfolio Coins:", portfolioCoins);
+  }, [portfolioCoins]);
+
+  const coin: Coin = {
+    id,
+    name,
+    symbol,
+    image: logo,
+    current_price: price,
+    market_cap: 0,
+    market_cap_rank: 0,
+    fully_diluted_valuation: null,
+    total_volume: 0,
+    high_24h: 0,
+    low_24h: 0,
+    price_change_24h: 0,
+    price_change_percentage_24h: change,
+    market_cap_change_24h: 0,
+    market_cap_change_percentage_24h: 0,
+    circulating_supply: 0,
+    total_supply: null,
+    max_supply: null,
+    ath: 0,
+    ath_change_percentage: 0,
+    ath_date: "",
+    atl: 0,
+    atl_change_percentage: 0,
+    atl_date: "",
+    roi: null,
+    last_updated: new Date().toISOString(),
+  };
+
+  const handleAddCoinRedux = () => {
+    dispatch(addToPortfolio(coin));
+    setMenuOpen(false);
+    setModalOpen(true);
+  };
+
+  const handleRemoveCoinRedux = () => {
+    dispatch(removeFromPortfolio(coin.id));
+    setMenuOpen(false);
+    setModalOpen(true);
+  };
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -46,16 +102,6 @@ const CryptoCard: React.FC<CryptoCardProps> = ({
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-
-  const handleAddCoin = () => {
-    setMenuOpen(false);
-    setModalOpen(true);
-  };
-
-  const handleRemoveCoin = () => {
-    setMenuOpen(false);
-    setModalOpen(true);
-  };
 
   return (
     <>
@@ -83,7 +129,6 @@ const CryptoCard: React.FC<CryptoCardProps> = ({
             </Typography>
           </Box>
         </Box>
-
         <Box
           sx={{
             display: "flex",
@@ -142,7 +187,7 @@ const CryptoCard: React.FC<CryptoCardProps> = ({
                 <Button
                   size="small"
                   variant="contained"
-                  startIcon={<AddIcon />}
+  startIcon={portfolio ? <RemoveIcon /> : <AddIcon />}
                   sx={{
                     textTransform: "none",
                     borderRadius: 2,
@@ -156,7 +201,9 @@ const CryptoCard: React.FC<CryptoCardProps> = ({
                         : "linear-gradient(90deg, #00f2fe 0%, #4facfe 100%)",
                     },
                   }}
-                  onClick={portfolio ? handleRemoveCoin : handleAddCoin}
+                  onClick={
+                    portfolio ? handleRemoveCoinRedux : handleAddCoinRedux
+                  }
                 >
                   {portfolio ? "Remove Coin" : "Add Coin"}
                 </Button>
@@ -165,7 +212,6 @@ const CryptoCard: React.FC<CryptoCardProps> = ({
           </Box>
         </Box>
       </Paper>
-
       {/* Modal Alert */}
       {modalOpen && (
         <AlertModal

@@ -1,46 +1,46 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<!-- Crypto Tracker -->
 
-## Available Scripts
+Crypto Tracker is a real-time cryptocurrency tracking app built with React, TypeScript, Redux, MUI, and Axios. It fetches live market data from the CoinGecko API, supports paginated loading, and allows users to filter coins by time intervals (1H, 1D, 1W, 1M, 1Y, All). Each coin is displayed in a CryptoCard, enabling users to add or remove coins from their portfolio. The app includes polling to refresh the currently viewed page every 10 seconds and modal alerts for portfolio actions. It offers a clean, responsive, and interactive experience for cryptocurrency .
 
-In the project directory, you can run:
+<!-- Technologies Used -->
 
-### `npm start`
+React
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+TypeScript
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+Redux
 
-### `npm test`
+Material-UI (MUI)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Axios
 
-### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+<!-- Final version of Crypto Tracker(Main feature) -->
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- Implemented full Crypto Tracker with paginated fetching from CoinGecko API.
+- Added polling to refresh only the current page every 10 seconds.
+- Refactored CryptoCard to accept `Coin` type directly, removing manual object creation.
+- Integrated add/remove portfolio functionality with Redux state management.
+- Maintains multiple pages in state for "Load More" without losing previous data.
+- Clean UI with responsive components.
+- Modal alerts for coin add/remove actions.
+- Optimized polling to avoid unnecessary re-fetches for other pages.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
+<!-- Getting Started -->
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+    Clone the repository git clone <your-repo-url>
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+<!-- Navigate to the project folder -->
+    cd crypto-tracker
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+<!-- Install dependencies -->
+    npm install
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+<!-- Run the development server -->
+    npm start
 
-## Learn More
+<!-- Open the app -->
+    Navigate to http://localhost:3000 in your browser.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).

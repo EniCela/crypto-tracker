@@ -1,3 +1,6 @@
+// ChartFilter is a simple UI component that renders a set of buttons for time range filters.
+// Users can select a filter (like 1H, 1D, 1W, etc.) and the selected filter is highlighted.
+
 import React from "react";
 import { Box, Button } from "@mui/material";
 

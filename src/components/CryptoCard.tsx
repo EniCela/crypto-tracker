@@ -1,3 +1,10 @@
+/**
+ * CryptoCard is a UI component that displays information about a single cryptocurrency,
+ * including its name, symbol, price, and 24h change. 
+ * Users can add or remove the coin from their portfolio using a contextual menu,
+ * which triggers Redux actions and shows a confirmation modal.
+ */
+
 import React, { useState, useRef, useEffect } from "react";
 import {
   Box,

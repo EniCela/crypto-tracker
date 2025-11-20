@@ -1,3 +1,11 @@
+/**
+ * HomePage component is the main view of the Crypto Tracker app.
+ * It fetches and displays cryptocurrency data with pagination and filter options.
+ * Users can filter coins by timeframes (1H, 1D, 1W, 1M, 1Y, All) and load more data.
+ * Data is refreshed automatically every 10 seconds to keep prices up to date.
+ * Uses Redux to store fetched coins and renders the list via CryptoList component.
+ */
+
 import React, { useEffect, useState } from "react";
 import { Button, Box, Typography } from "@mui/material";
 import CryptoList from "../components/CryptoList";

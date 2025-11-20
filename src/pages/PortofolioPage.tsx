@@ -1,5 +1,12 @@
+/**
+ * PortofolioPage displays the user's crypto portfolio overview.
+ * It calculates the total portfolio value, generates chart data based on selected time filter,
+ * and renders the portfolio coins in a list. Users can filter their portfolio with timeframes
+ * like "1D" or view all coins. The chart dynamically updates when portfolio data or filter changes.
+ */
+
 import React, { useEffect, useState } from "react";
-import Header from "../components/HeaderPage";
+import Header from "../components/header/HeaderPage";
 import CryptoChart from "../components/CryptoChart";
 import CryptoList from "../components/CryptoList";
 import ChartFilter from "../components/ChartFilter";

@@ -1,3 +1,9 @@
+/**
+ * HeaderApp is a fixed top header for the Crypto Tracker application.
+ * It displays the app title centered with a shadow and rounded bottom corners.
+ * Stays visible on top of all content using a high z-index.
+ */
+
 import React from "react";
 import { Box, Typography } from "@mui/material";
 

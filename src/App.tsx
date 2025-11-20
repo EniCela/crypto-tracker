@@ -4,7 +4,7 @@ import HomePage from "./pages/Portofoliopage";
 import FooterNav from "./components/FooterNav";
 import PortofolioPage from "./pages/Homepage";
 import ProfilePage from "./pages/ProfilePage";
-import HeaderApp from "./components/HeaderApp";
+import HeaderApp from "./components/header/HeaderApp";
 import { Box } from "@mui/material";
 import { Provider } from "react-redux";
 import { store, persistor } from "./store";

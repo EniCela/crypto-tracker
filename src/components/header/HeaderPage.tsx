@@ -1,3 +1,8 @@
+/**
+ * Header is a reusable top section component that displays a title and an optional count value.
+ * It uses MUI's AppBar without shadow for a clean look and can show a numeric value (e.g., portfolio total).
+ */
+
 import React from "react";
 import { AppBar, Typography, Box } from "@mui/material";
 

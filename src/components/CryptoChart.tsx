@@ -1,3 +1,5 @@
+// CryptoChart is a reusable component that renders a line chart using Chart.js.s.
+
 import React from "react";
 import { Line } from "react-chartjs-2";
 import {

@@ -1,3 +1,9 @@
+/**
+ * apiClient is a pre-configured Axios instance for communicating with the CoinGecko API.
+ * It sets a base URL, a timeout of 15 seconds, and handles common HTTP errors globally
+ * using an interceptor that logs appropriate messages for debugging purposes.
+ */
+
 import axios from "axios";
 
 const apiClient = axios.create({

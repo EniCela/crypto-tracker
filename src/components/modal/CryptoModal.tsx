@@ -1,3 +1,5 @@
+// CryptoModal is a modal dialog component that displays detailed information for a selected coin.
+
 import React from "react";
 import {
   Dialog,

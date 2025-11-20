@@ -1,3 +1,9 @@
+/**
+ * ProfilePage displays the user's profile information and menu options.
+ * Note: This is a static design only and does not implement any functionality
+ * for settings, payment methods, or logout actions.
+ */
+
 import {
   Box,
   Avatar,

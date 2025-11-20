@@ -1,3 +1,10 @@
+/**
+ * FooterNav is a bottom navigation bar component.
+ * It provides quick navigation between the main pages: Home/Chart, Portfolio, and Profile.
+ * The active page is highlighted by changing the icon color.
+ * Uses React Router's useNavigate and useLocation for navigation and active state detection.
+ */
+
 import { Box, IconButton } from "@mui/material";
 import ShowChartIcon from "@mui/icons-material/ShowChart";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";

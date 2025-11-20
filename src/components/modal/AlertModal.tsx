@@ -1,3 +1,6 @@
+// AlertModal is a reusable modal component that displays a message overlaying the screen.
+// Use it for alerting users when click add or remove actions are performed.
+
 import React from "react";
 import { Box, Typography, Button } from "@mui/material";
 

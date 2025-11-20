@@ -1,3 +1,10 @@
+/**
+ * CryptoList is a component that displays a list of cryptocurrency cards.
+ * It maps API data to the full Coin type, renders each coin as a CryptoCard,
+ * and handles opening a modal with more detailed coin information when a card is clicked.
+ * It supports both regular coin listing and portfolio mode.
+ */
+
 import React, { useState } from "react";
 import { Box } from "@mui/material";
 import CryptoCard from "./CryptoCard";
